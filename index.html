@@ -3,26 +3,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <title>Hangman</title>
 </head>
 <body>
-    <head>
-        <h1>Hangman Game</h1>
-        <h1>_nology Edition</h1>
-    </head>
-    <main>
-        <section>
-            <h2>This is where  the hangman will be</h2>
-        </section>
+    <div id="overlay">
+        <a href="#game">
+            <button class="button button--start">Start Game</button>
+        </a>
+    </div>
 
-        <section>
-            <h2>_ _ _ _ _ _ _ _</h2>
-            <button>Start Game</button>
-            <button>Reset Game</button>
-        </section>
-        <section class="alphabet">
-        </section>
-    </main>
-    <script src="app.js"></script>
+    <container id="game">
+        <header>
+            <h1>Hangman Game</h1>
+            <h1>_nology Edition</h1>
+        </header>
+        <main>
+            <section class="hangman">
+                <h2>This is where  the hangman will be</h2>
+            </section>
+    
+            <div class="letters">
+                <div class="solution"></div>
+                <section class="hidden-letters"></section>
+                <section>
+                    <button class="button button--reset">Reset Game</button>
+                </section>
+            </div>
+
+    
+            <section class="alphabet">
+            </section>
+        </main>
+    </container>
+    <script src="app.js" type="module"></script>
 </body>
 </html>
