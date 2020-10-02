@@ -4,76 +4,139 @@ var _words = _interopRequireDefault(require("./words.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]; // Insert the letters directly into the HTML
-
-var createLetterHTML = function createLetterHTML(letter) {
-  return "<button>".concat(letter, "</button>");
-};
+// ---------------------
+// 1. Store an alphabet - letters on the keypad
+// ---------------------
+var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]; // ---------------------
+// 2. Insert the letters directly into the HTML
+// ---------------------
 
 var insertLetters = function insertLetters() {
   var letterContainer = document.querySelector(".alphabet");
   alphabet.forEach(function (letter) {
-    var letterHTML = createLetterHTML(letter);
+    var letterHTML = "<button>".concat(letter, "</button>");
     letterContainer.innerHTML += letterHTML;
   });
 };
 
-insertLetters(); // Get random word from words array and store it in a variable called randomWord;
+insertLetters(); // ---------------------
+// 3. Get random word from words array and store it in a variable called randomWord;
+// ---------------------
 
-var clue = document.querySelector(".hidden-letters");
-console.log(clue);
 var randomWord = "";
 
 var getRandomWord = function getRandomWord() {
   randomWord = _words["default"][Math.floor(Math.random() * _words["default"].length)];
   return randomWord;
-}; // Create the hidden word
+}; // ---------------------
+// 4. Insert the word into the HTML document
+// ---------------------
 
 
 var createWordHTML = function createWordHTML(letter) {
-  return "<p>_<span>".concat(letter, "</span><p>");
+  return "<p data-letter=\"".concat(letter, "\">_<p>");
 };
+
+var clue = document.querySelector(".hidden-letters");
 
 var displayPuzzle = function displayPuzzle(word) {
   for (var i = 0; i < word.length; i++) {
-    var wordHTML = createWordHTML(word[i]);
+    var letter = word[i];
+    var wordHTML = createWordHTML(letter);
     clue.innerHTML += wordHTML;
   }
-}; // Display a new word when start game is pressed
+}; // -------------------------------------------------
+// 5. Create the event listener for starting our game
+// -------------------------------------------------
 
 
 var startButton = document.querySelector(".button--start");
-var solution = document.querySelector(".solution");
 var overlay = document.getElementById("overlay");
 startButton.addEventListener('click', function () {
   // hide the welcome page
   overlay.style.display = "none"; //generate new random word
 
-  randomWord = getRandomWord(); // console.log(randomWord);
+  randomWord = getRandomWord(); // display _ _ _ istead of the word
 
   displayPuzzle(randomWord);
-  solution.innerHTML = randomWord;
+  displayHearts();
   return;
-});
-console.log(solution); // On button click change color of the button to red
+}); // ---------------------
+// 6. Listen for events on every letter - And see if the clicked letter matches a letter from the word
+// ---------------------
 
 var letterButton = document.querySelectorAll(".alphabet button");
+letterButton.forEach(function (button) {
+  // 6.1 Add an event listener for each letter (button) at the bottom of the screen
+  button.addEventListener('click', function () {
+    //  change the background of the tile
+    button.style.backgroundColor = "black";
+    checkIfLetterExists(button.innerHTML);
 
-var _loop = function _loop(i) {
-  letterButton[i].addEventListener('click', function () {
-    // change the background of the tile
-    letterButton[i].style.backgroundColor = "red"; // iterate through the solution to check for a match
-
-    for (var j = 0; j < clue.innerHTML.length; j++) {
-      if (letterButton[i].innerHTML === clue.innerHTML[j]) {
-        console.log("it's a match");
-      } else {
-        console.log("no match");
-      }
+    if (lostLives === 1) {
+      numberOfLives.pop();
+      displayHearts();
     }
   });
-};
+});
 
-for (var i = 0; i < letterButton.length; i++) {
-  _loop(i);
-} // Check if the clicked button matches any of the pressed buttons is in the solution
+var checkIfLetterExists = function checkIfLetterExists(letter) {
+  // Go through each of our hidden letter dom elements
+  var hiddenLetterElements = document.querySelectorAll(".hidden-letters p");
+  hiddenLetterElements.forEach(function (hiddenLetterElement) {
+    // if the letter is hidden, and it's the letter we're looking for. show it
+    var isHidden = hiddenLetterElement.innerHTML == "_";
+    var elementLetter = hiddenLetterElement.dataset.letter;
+
+    if (isHidden && elementLetter == letter) {
+      // show the letter if it's hidden in here
+      hiddenLetterElement.innerHTML = letter;
+    } else {
+      lostLives = 1;
+      console.log(lostLives);
+    }
+  });
+}; //------------------------------
+// 7. Create the event listner to start a new game
+//------------------------------
+
+
+var newGame = document.querySelector(".button--new");
+newGame.addEventListener('click', function () {
+  // get a new random word
+  clue.innerHTML = "";
+  randomWord = getRandomWord(); // display _ _ _ istead of the word
+
+  displayPuzzle(randomWord); // clear the letter colors
+
+  letterButton.forEach(function (button) {
+    button.style.background = "#4E5283";
+  }); // reset the lives
+
+  lives.innerHTML = "";
+  numberOfLives = [1, 2, 3, 4, 5];
+  displayHearts();
+  return;
+}); //------------------------------
+// 8. Create the event listner to show solution
+//------------------------------
+
+var giveUp = document.querySelector(".button--surrender");
+giveUp.addEventListener('click', function () {
+  clue.innerHTML = randomWord;
+}); //-------------------------------
+// 9. Display the numbers of lives available
+//-------------------------------
+
+var lives = document.querySelector(".lives");
+var lostLives = 0;
+var numberOfLives = [1, 2, 3, 4, 5];
+
+var displayHearts = function displayHearts() {
+  lives.innerHTML = "";
+  numberOfLives.forEach(function (life) {
+    var lifeHTML = "<i class=\"fas fa-heart fa-4x\"></i>";
+    lives.innerHTML += lifeHTML;
+    lostLives = 0;
+  });
+}; // at each letter clicked check the value of lostLives

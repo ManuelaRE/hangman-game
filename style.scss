@@ -4,6 +4,13 @@
     box-sizing: border-box;
 }
 
+body {
+    // background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
+    background-image: url("./assets/the-background-2819000_1280.png");
+    background-size: cover; 
+    width:100%;
+    height:100%;
+}
 #overlay {
     background-image : url('./assets/hangman.PNG');
     background-size: cover; 
@@ -66,7 +73,7 @@ header h1 {
     font-size: 30px;
     line-height: 1.5em;
     text-align: center;
-    color: #5b417f;
+    color: white;
 }
 
 main {
@@ -79,14 +86,30 @@ main {
 }
 
 .hangman {
+    margin-top: 3%;
     grid-area: man;
-    border: 2px solid red;
+    // border: 2px solid red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    img {
+        height: auto;
+        width: 400px;
+    }
+
+    div {
+        margin-top: 3%;
+        color: red;
+    }
 }
 
 .letters {
     grid-area: letters;
-    border: 2px solid red;
+    // border: 2px solid red;
     justify-self: center;
+    align-self: center;
+    margin-top: 2%;
 
     .hidden-letters {
         display: flex;
@@ -94,35 +117,37 @@ main {
         flex-wrap: nowrap;
         justify-content: center;
         margin-top: 15%;
-
+        margin-bottom: 15%;
+        font-weight: 900;
+        font-family: 'Press Start 2P', cursive;
+        font-size: 50px;
         p {
-            margin: 1%;
-            font-size: 50px;
-            font-weight: 900;
+            margin: 2px;
         }
     }
 }
 
 .alphabet {
     grid-area: alphabet;
-    border: 2px solid red;
+    // border: 2px solid red;
     margin:30px auto;
     padding: 20px;
     width: 60%;
+    text-align: center;
 
     button {
         margin: 0 10px 10px 0;
         list-style: none;
         width: 55px;
         height: 50px;
-        background: #0066a2;
+        background: #4E5283;
         color: white;
         cursor :pointer;
         border-radius: 5px;
         border: none;
         font-family: 'Press Start 2P', cursive;
         &:hover {
-        background: #c1d72e;
+        background: #FCD0A1;
         border: none;
         }
         &:focus {
@@ -132,7 +157,7 @@ main {
 }
 
 
-.button--reset {
+.button--surrender, .button--new {
     cursor: pointer;
     text-decoration: none !important;
     outline: none !important;
@@ -142,7 +167,7 @@ main {
     letter-spacing: .1em;
     text-shadow: 2px 2px 1px #0066a2, -2px 2px 1px #0066a2, 2px -2px 1px #0066a2, -2px -2px 1px #0066a2, 0px 2px 1px #0066a2, 0px -2px 1px #0066a2, 0px 4px 1px #004a87, 2px 4px 1px #004a87, -2px 4px 1px  #004a87;
     border: none;
-    margin: 15px 15px 30px;
+    margin: 25px 25px 35px;
     background: repeating-linear-gradient( 45deg, #3ebbf7, #3ebbf7 5px, #45b1f4 5px, #45b1f4 10px);
     border-bottom: 3px solid rgba(16, 91, 146, 0.5);
     border-top: 3px solid rgba(255,255,255,.3);
@@ -152,8 +177,11 @@ main {
     box-shadow: 0 6px 0 #266b91, 0 8px 1px 1px rgba(0,0,0,.3), 0 10px 0 5px #12517d, 0 12px 0 5px #1a6b9a, 0 15px 0 5px #0c405e, 0 15px 1px 6px rgba(0,0,0,.3);
 }
 
-.button--reset:hover {
+.button--surrender:hover, .button--new:hover {
     top: 2px;
     box-shadow: 0 4px 0 #266b91, 0 6px 1px 1px rgba(0,0,0,.3), 0 8px 0 5px #12517d, 0 10px 0 5px #1a6b9a, 0 13px 0 5px #0c405e, 0 13px 1px 6px rgba(0,0,0,.3);
 }
 
+.svg-inline--fa{
+    margin: 5px;
+}
