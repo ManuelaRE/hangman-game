@@ -71,8 +71,7 @@ letterButton.forEach(button => {
         //  change the background of the tile
         button.style.backgroundColor = "black";
         checkIfLetterExists(button.innerHTML);
-
-        if(lostLives === 1) {
+        if(!checkIfLetterExists(button.innerHTML)) {
             numberOfLives.pop();
             displayHearts();
         }
@@ -90,8 +89,7 @@ const checkIfLetterExists = (letter) => {
             // show the letter if it's hidden in here
             hiddenLetterElement.innerHTML = letter;
         } else {
-            lostLives = 1;
-            console.log(lostLives);
+            console.log(false)
         }
     })
 }
