@@ -71,10 +71,8 @@ letterButton.forEach(button => {
         //  change the background of the tile
         button.style.backgroundColor = "black";
         checkIfLetterExists(button.innerHTML);
-        if(!checkIfLetterExists(button.innerHTML)) {
-            numberOfLives.pop();
-            displayHearts();
-        }
+        loseOneLife();
+        isLifeLost = true;
     });
 });
 
@@ -88,9 +86,8 @@ const checkIfLetterExists = (letter) => {
         if (isHidden && elementLetter == letter) {
             // show the letter if it's hidden in here
             hiddenLetterElement.innerHTML = letter;
-        } else {
-            console.log(false)
-        }
+            isLifeLost = false;
+        } 
     })
 }
 
@@ -134,7 +131,7 @@ giveUp.addEventListener('click', () => {
 // 9. Display the numbers of lives available
 //-------------------------------
 const lives = document.querySelector(".lives");
-let lostLives = 0;
+let isLifeLost = true;
 
 let numberOfLives = [1, 2, 3, 4, 5];
 const displayHearts = () => {
@@ -142,10 +139,36 @@ const displayHearts = () => {
     numberOfLives.forEach(life => {
         let lifeHTML = `<i class="fas fa-heart fa-4x"></i>`;
         lives.innerHTML += lifeHTML;
-        lostLives = 0;
     })
 }
 
-// at each letter clicked check the value of lostLives
+
+//-------------------------------------------------
+// 10. At each letter clicked check if a life is lost
+//-------------------------------------------------
+
+const loseOneLife = () => {
+    if(isLifeLost) {
+        numberOfLives.pop();
+        displayHearts();
+        isLifeLost = true;
+        console.log(numberOfLives);
+        gameOver();
+    }
+}
+
+
+//----------------------------------------------
+// 11. Display Game Over when all 5 lives are lost and disable the buttons for further use
+//----------------------------------------------
+
+const gameOver = () => {
+    if(numberOfLives.length === 0) {
+        alert("game over")
+        letterButton.forEach(button => {
+            button.disabled = true;
+        });
+    }
+}
 
 
