@@ -5,6 +5,7 @@ import words from "./words.js";
 // ---------------------
 const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 
+
 // ---------------------
 // 2. Insert the letters directly into the HTML
 // ---------------------
@@ -56,6 +57,7 @@ startButton.addEventListener('click', () => {
     randomWord = getRandomWord();
     // display _ _ _ istead of the word
     displayPuzzle(randomWord);
+    // display the starting lives
     displayHearts();
     return;
 })
@@ -68,9 +70,10 @@ const letterButton = document.querySelectorAll(".alphabet button");
 letterButton.forEach(button => {
     // 6.1 Add an event listener for each letter (button) at the bottom of the screen
     button.addEventListener('click', () => {
-        //  change the background of the tile
+        // 6.2 change the background of the tile
         button.style.backgroundColor = "black";
         checkIfLetterExists(button.innerHTML);
+        // 6.3 loose a life if there is no match
         loseOneLife();
         isLifeLost = true;
     });
@@ -80,7 +83,7 @@ const checkIfLetterExists = (letter) => {
     // Go through each of our hidden letter dom elements
     const hiddenLetterElements =  document.querySelectorAll(".hidden-letters p");
     hiddenLetterElements.forEach(hiddenLetterElement => {
-        // if the letter is hidden, and it's the letter we're looking for. show it
+        // if the letter is hidden, and it's the letter we're looking for, show it
         const isHidden = hiddenLetterElement.innerHTML == "_";
         const elementLetter = hiddenLetterElement.dataset.letter;
         if (isHidden && elementLetter == letter) {
@@ -112,6 +115,7 @@ newGame.addEventListener('click', () => {
     lives.innerHTML = "";
     numberOfLives = [1, 2, 3, 4, 5];
     displayHearts();
+    disableButtons(false);
     return;
 })
 
@@ -123,6 +127,7 @@ const giveUp = document.querySelector(".button--surrender");
 
 giveUp.addEventListener('click', () => {
     clue.innerHTML = randomWord;
+    disableButtons(true);
 })
 
 
@@ -152,7 +157,6 @@ const loseOneLife = () => {
         numberOfLives.pop();
         displayHearts();
         isLifeLost = true;
-        console.log(numberOfLives);
         gameOver();
     }
 }
@@ -165,10 +169,16 @@ const loseOneLife = () => {
 const gameOver = () => {
     if(numberOfLives.length === 0) {
         alert("game over")
-        letterButton.forEach(button => {
-            button.disabled = true;
-        });
+        disableButtons(true);
+    } else {
+        disableButtons(false);
     }
 }
 
+
+const disableButtons = (boolean) => {
+    letterButton.forEach(button => {
+        button.disabled = boolean;
+    })
+}
 
